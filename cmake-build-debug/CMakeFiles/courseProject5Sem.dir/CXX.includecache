@@ -6,6 +6,8 @@
 
 #IncludeRegexTransform: 
 
+/home/andrey/CLionProjects/courseProject5Sem/QuickMath.hpp
+
 /home/andrey/CLionProjects/courseProject5Sem/main.cpp
 iostream
 -
@@ -21,4 +23,6 @@ sstream
 -
 iomanip
 -
+QuickMath.hpp
+/home/andrey/CLionProjects/courseProject5Sem/QuickMath.hpp
 

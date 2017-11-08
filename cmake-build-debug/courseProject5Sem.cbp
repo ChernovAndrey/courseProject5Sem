@@ -84,6 +84,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/andrey/CLionProjects/courseProject5Sem/QuickMath.hpp">
+			<Option target="courseProject5Sem"/>
+		</Unit>
 		<Unit filename="/home/andrey/CLionProjects/courseProject5Sem/main.cpp">
 			<Option target="courseProject5Sem"/>
 		</Unit>

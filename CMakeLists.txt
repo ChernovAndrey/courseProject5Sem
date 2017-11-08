@@ -3,5 +3,5 @@ project(courseProject5Sem)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp QuickMath.hpp)
 add_executable(courseProject5Sem ${SOURCE_FILES})
