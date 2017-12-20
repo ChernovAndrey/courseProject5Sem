@@ -5,47 +5,21 @@
 #ifndef COURSEPROJECT5SEM_QUICKMATH_H
 #define COURSEPROJECT5SEM_QUICKMATH_H
 
+#include <cmath>
+#include <cassert>
 
-class  QuickMath {
+class QuickMath {
 private:
     QuickMath() = default;
 
 public:
-
-
-    static float quickAppr(float x, float p,bool flagApprox=true) {
-        // float xhalf = 0.5f * v[j];
-
-        int i = *(int *) &x;
-        i = static_cast<int>(0x3f7a3bea + p * (i - 0x3f7a3bea));
-        float y = *(float *) &i;
-        if(flagApprox) {
-            float q = 1.0/p;
-            return (1 - p) * y + p*(x/quickAppr(y, static_cast<float>(q - 1.0), false));
-        }
-        return y;
-    }
-
-
-
-    static float powNatural(float x, int k) // возведение x в степень k
+    template<typename T>
+    static T powNatural(T x, int k) // возведение x в степень k
     {
-        float res = 1.0;
-        while (k)
-        {
-            if (k & 1)
-                res *= x;
-            x *= x;
-            k >>= 1;
-        }
-        return res;
-    }
-
-    static double powNatural(double x, int k) // возведение x в степень k
-    {
-        float res = 1.0;
-        while (k)
-        {
+        if(k==1) return x;
+        if(k==0) return 1;
+        T res = 1.0;
+        while (k) {
             if (k & 1)
                 res *= x;
             x *= x;
@@ -57,84 +31,119 @@ public:
 
     static float powInverse(float x, int q) { //equal pow(x,1/q)
         int i = *(int *) &x;
-        i = static_cast<int>(0x3f7a3bea + (1.0/q) * (i - 0x3f7a3bea));
+        float p = 1.0f/q;
+        //i = static_cast<int>(0x3f7a3bea + (1.0f/q) * (i - 0x3f7a3bea));
+        i = 1064975338 + p*(i - 1064975338);
         float y = *(float *) &i;
-
-        y = (1-1.0/q)*y+(1.0/q)*x/powNatural(y,q-1);
-        return (1-1.0/q)*y+(1.0/q)*x/powNatural(y,q-1);
+       // std::cout<<x<<" | "<<(pow(y,q)-x)<<std::endl;
+        float p1 = 1-p;
+        float px= p*x;
+        int q1 =q-1;
+        y = p1 * y + px/powNatural(y, q1);
+        return  p1* y + px/powNatural(y, q1);
     }
 
-    static float powInverse2(float x, int q) { //equal pow(x,1/q)
+
+    static float powInverse2(float x, int q) { //equal pow(x,1/q) // второй с корнем
         int i = *(int *) &x;
-        i = static_cast<int>(0x3f7a3bea + (1.0/q) * (i - 0x3f7a3bea));//не очень как то
+        float p = 1.0f/q;
+        //i = static_cast<int>(0x3f7a3bea + (1.0f/q) * (i - 0x3f7a3bea));
+        i = 1064975338 + p*(i - 1064975338);
         float y = *(float *) &i;
 
-      //  y = (1-1.0/q)*y+(1.0/q)*x/powNatural(y,q-1);
-        float a = powNatural(y,q-2);
-        float b = a*y;//powNatural(y,q-1)
-        float c = b*y;//powNatural(y,q)
-        float cx= c - x;
-        float d = ((q-1)*a*cx)/(b*b*q);
-        return y-(cx)/(q*b)*(1+0.5*d);
+        //y= y *(q-2 + sqrtf(-1.0f+ 2.0f*(x*(1.0f-p)/powNatural(y,q) + p))) / (q - 1);
+        return y *(q-2 + sqrtf(-1.0f+ 2.0f*( x*(1.0f-p)/powNatural(y,q) + p ))) / (q - 1);
     }
+
+    static double powInverse2(double x, int q) { //equal pow(x,1/q) // второй с корнем
+        double p = 1.0d/q;
+        long i = *(long *) &x;
+        i = (0x3FEF47724901B800 + p*(i - 0x3FEF47724901B800));
+        double y = *(double *) &i;
+
+        //y= y *(q-2 + sqrtf(-1.0f+ 2.0f*(x*(1.0f-p)/powNatural(y,q) + p))) / (q - 1);
+        return y *(q-2 + sqrt(-1.0d+ 2.0d*( x*(1.0d-p)/powNatural(y,q) + p ))) / (q - 1);
+    }
+
+
+//
+//    static float powInverse2(float x, int q) { //equal pow(x,1/q)
+//        int i = *(int *) &x;
+//        i = static_cast<int>(0x3f7a3bea + (1.0f / q) * (i - 0x3f7a3bea));//не очень как то
+//        float y = *(float *) &i;
+//
+//        //  y = (1-1.0/q)*y+(1.0/q)*x/powNatural(y,q-1);
+//        float a = powNatural(y, q - 2);
+//        float b = a * y;//powNatural(y,q-1)
+//        float c = b * y;//powNatural(y,q)
+//        float cx = c - x;
+//        float d = ((q - 1) * a * cx) / (b * b * q);
+//        return y - (cx) / (q * b) * (1 + 0.5f * d);
+//    }
+//
+
+
+//
+//    static float powInverseAnotherSigma(float x, int q) { //equal pow(x,1/q)
+//        int i = *(int *) &x;
+//        i = static_cast<int>(1064975338.569728 + (1.0f/q) * (i -1064975338.569728));
+//        float y = *(float *) &i;
+//
+//        y = (1-1.0f/q)*y+(1.0f/q)*x/powNatural(y,q-1);
+//        return (1-1.0f/q)*y+(1.0f/q)*x/powNatural(y,q-1);
+//    }
 
 
     static double powInverse(double x, int q) { //equal pow(x,1/q)
+        double p = 1.0d/q;
         long i = *(long *) &x;
-        i = static_cast<long>(0x3FEF47724901B800 + (1.0 / q) * (i - 0x3FEF47724901B800));
-        double y = *(double*) &i;
+        i = (0x3FEF47724901B800 + p*(i - 0x3FEF47724901B800));
+        double y = *(double *) &i;
 
-        y = (1-1.0/q)*y+(1.0/q)*x/powNatural(y,q-1);
-        return (1-1.0/q)*y+(1.0/q)*x/powNatural(y,q-1);
+        y = (1 - p)*y + p*x/powNatural(y, q - 1);
+        return (1 - p)*y + p*x/powNatural(y, q - 1);
     }
 
 
-
-/*from wikipedia Quake 3*/
-    static float Q_rsqrt(float number) {
-        long i;
-        float x2, y;
-        const float threehalfs = 1.5F;
-
-        x2 = number * 0.5F;
-        y = number;
-        i = *(long *) &y;                       // evil floating point bit level hacking
-        i = 0x5f3759df - (i >> 1);               // what the fuck?
-        y = *(float *) &i;
-        y = y * (threehalfs - (x2 * y * y));   // 1st iteration
-//	y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
-
-        return y;
+    template<typename T>
+    static T quickPow2(T x, int n, int m) {//equial pow(x,n/m)
+        //   return powNatural(powInverse2(x,m),n);
+        if(n<m) return powInverse2(powNatural(x,n), m);
+        return powNatural(x,n/m)*powInverse2(powNatural(x,n%m), m);
     }
 
-    static float quickPow(float x, int n, int m){//equial pow(x,n/m)
-        // return powNatural(powInverse(x,m),n);
-  /*      clock_t start = clock();
-        float a = powNatural(x,n);
-        clock_t end = clock();
-        float seconds = (float) (end - start) / CLOCKS_PER_SEC;
-
-      clock_t start2 = clock();
-        float res = powNatural(x,n);
-        clock_t end2 = clock();
-        float seconds2 = (float) (end2 - start2) / CLOCKS_PER_SEC;
-         std::cout<<"timeInv:"<<seconds<<std::endl;
-         std::cout<<"timeNat:"<<seconds2<<std::endl;
-        return res;*/
-
-        return powInverse(powNatural(x,n),m);
+    template<typename T>
+    static T quickPow(T x, int n, int m) {//equial pow(x,n/m)
+//        int k = n/m;
+//        int l = n%m;
+//        return powNatural(x,n/m)*powInverse(powNatural(x, n%m), m);
+     //  return powNatural(powInverse3(x,m),n);
+        if(n<m) return powInverse(powNatural(x,n), m);
+        return powNatural(x,n/m)*powInverse(powNatural(x,n%m), m);
     }
 
-    static float quickPow2(float x, int n, int m){//equial pow(x,n/m)
-      //   return powNatural(powInverse2(x,m),n);
-        return powInverse2(powNatural(x,n),m);
+//
+//    template<typename T>
+//    static T quickPow3(T x, int n, int m) {//equial pow(x,n/m)
+////        int k = n/m;
+////        int l = n%m;
+////        return powNatural(x,n/m)*powInverse(powNatural(x, n%m), m);
+//        //  return powNatural(powInverse3(x,m),n);
+//        if(n<m) return powInverse3(powNatural(x,n), m);
+//        return powNatural(x,n/m)*powInverse3(powNatural(x,n%m), m);
+//    }
+
+    template<typename T>
+    static T quickPow2m(T x, int n, int m){
+        T res=x;
+        assert(m%2==0);
+        while(m != 1){
+            res=sqrt(res);
+            m >>= 1;
+       }
+       return powNatural(res,n);
     }
 
-
-    static double quickPow(double x, int n, int m){//equial pow(x,n/m)
-        // return powNatural(powInverse(x,m),n);
-        return powInverse(powNatural(x,n),m);
-    }
 
 };
 
