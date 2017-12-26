@@ -9,10 +9,10 @@
 #include "LeastSquare.h"
 
 using namespace std;
-using number = double;
-int N = 100000000;
+using number = float;
+int N = 10000000;
 const int n =1;
-const int m=4;
+const int m=3;
 const number p =(1.0/m)*n;
 
 
@@ -34,9 +34,7 @@ void evaluateDiff(const vector<number> &v1, const vector<number> &v2, int &nMax,
             nMax=i;
             max=diff;
         }
-     //   cout<<diff<<" ";
     }
-
 }
 
 
@@ -52,10 +50,6 @@ pair<vector<number>,number> evaluateQuick(const vector<number> &v,int n, int m, 
     return make_pair(res,secondsQ);
 }
 
-number powExpLog(number x, int n, int m){
-    return exp(p*log(x));
-}
-
 //for number K=3FEF47724901B800
 int main() {
 
@@ -66,28 +60,11 @@ int main() {
     vector<number> vApprox2m(v.size());
     vector<number> vAccur(v.size());
 
-    //number p = 1.0/3;
-
-
-//    clock_t startQ = clock();
-//    for (int i = 0; i < v.size(); i++) {
-//        vApprox[i]=QuickMath::quickPow(v[i],n,m);
-//    //    vApprox[i]=QuickMath::quickAppr(v[i],(1.0*n)/m,true);
-//    }
-//    clock_t endQ = clock();
-//    number secondsQ = (number) (endQ - startQ) / CLOCKS_PER_SEC;
     number secondsQ;
     tie(vApprox,secondsQ)= evaluateQuick(v,n,m,QuickMath::quickPow);  //холостой прогон
+
     tie(vApprox,secondsQ)= evaluateQuick(v,n,m,QuickMath::quickPow);
 
-
-//    clock_t startQ2 = clock();
-//    for (int i = 0; i < v.size(); i++) {
-//        vApprox2[i]=QuickMath::quickPow2(v[i],n,m);
-//        //    vApprox[i]=QuickMath::quickAppr(v[i],(1.0*n)/m,true);
-//    }
-//    clock_t endQ2 = clock();
-//    number secondsQ2 = (number) (endQ2 - startQ2) / CLOCKS_PER_SEC;
     number secondsQ2;
     tie(vApprox2,secondsQ2)= evaluateQuick(v,n,m,QuickMath::quickPow2);
 
@@ -98,7 +75,7 @@ int main() {
 
     clock_t startS = clock();
     for (int i = 0; i < v.size(); i++) {
-    vAccur[i]= pow(v[i],(1.0f*n/m));
+    vAccur[i]= powf(v[i],(1.0f*n/m));
     }
     clock_t endS = clock();
     number secondsS = (number) (endS - startS) / CLOCKS_PER_SEC;
@@ -109,22 +86,6 @@ int main() {
     cout << "standard:" << secondsS << endl;
 
     cout<<endl<<endl;
-
-   /* for(int i=0;i<vAccur.size();i++){
-        cout<<vAccur[i]<<" ";
-    }
-    cout <<endl;
-
-
-    for(int i=0;i<vAccur.size();i++){
-        cout<<vApprox[i]<<" ";
-    }
-    cout << endl;
-
-    for(int i=0;i<vApprox2.size();i++){
-        cout<<vApprox2[i]<<" ";
-    }
-    cout << endl;*/
 
     number max =0;
     number max2 =0;
