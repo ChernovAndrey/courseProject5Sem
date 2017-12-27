@@ -4,14 +4,11 @@
 #include <vector>
 #include <iomanip>
 #include "QuickMath.hpp"
-#include "Grid/Grid.h"
-#include "Grid/UniformGrid.h"
-#include "LeastSquare.h"
 
 using namespace std;
 using number = float;
 int N = 10000000;
-const int n =1;
+const int n =4;
 const int m=3;
 const number p =(1.0/m)*n;
 
@@ -52,7 +49,6 @@ pair<vector<number>,number> evaluateQuick(const vector<number> &v,int n, int m, 
 
 //for number K=3FEF47724901B800
 int main() {
-
     vector<number> v = createRandomVector();
 
     vector<number> vApprox(v.size());
@@ -123,4 +119,5 @@ int main() {
     }
 
     return 0;
+    // VZ3N-S6CJZFWH
 }

@@ -39,46 +39,86 @@ public:
         float p1 = 1.0f-p;
         float px= p*x;
         int q1 =q-1;
+     //   y = p1 * y + px/powNatural(y, q1);
+        return  p1* y + px/powNatural(y, q1);
+    }
+
+    static double powInverse(double x, int q) { //equal pow(x,1/q)
+        long i = *(long *) &x;
+        double p = 1.0d/q;
+        //i = static_cast<int>(0x3f7a3bea + (1.0f/q) * (i - 0x3f7a3bea));
+        i = 0x3FEF47724901B800 + p*(i - 0x3FEF47724901B800);
+        double y = *(double *) &i;
+        double p1 = 1.0d-p;
+        double px= p*x;
+        int q1 =q-1;
         y = p1 * y + px/powNatural(y, q1);
         return  p1* y + px/powNatural(y, q1);
     }
-//
-//
-//    static float powInverse2(float x, int q) { //equal pow(x,1/q) // второй с корнем
-//        int i = *(int *) &x;
-//        float p = 1.0f/q;
-//        //i = static_cast<int>(0x3f7a3bea + (1.0f/q) * (i - 0x3f7a3bea));
-//        i = 1064975338 + p*(i - 1064975338);
-//        float y = *(float *) &i;
-//
-//        //y= y *(q-2 + sqrtf(-1.0f+ 2.0f*(x*(1.0f-p)/powNatural(y,q) + p))) / (q - 1);
-//        return y *(q-2 + sqrtf(-1.0f+ 2.0f*( x*(1.0f-p)/powNatural(y,q) + p ))) / (q - 1);
-//    }
 
-    static double powInverse2(double x, int q) { //equal pow(x,1/q) // второй с корнем
-        double p = 1.0d/q;
-        long i = *(long *) &x;
-        i = (0x3FEF47724901B800 + p*(i - 0x3FEF47724901B800));
-        double y = *(double *) &i;
-
-        //y= y *(q-2 + sqrtf(-1.0f+ 2.0f*(x*(1.0f-p)/powNatural(y,q) + p))) / (q - 1);
-        return y *(q-2 + sqrt(-1.0d+ 2.0d*( x*(1.0d-p)/powNatural(y,q) + p ))) / (q - 1);
-    }
-
-
-
-    static float powInverse2(float x, int q) { //equal pow(x,1/q)
+    static float powInverse2(float x, int q) { //equal pow(x,1/q) // второй с корнем
         int i = *(int *) &x;
-        i = static_cast<int>(0x3f7a3bea + (1.0f / q) * (i - 0x3f7a3bea));//не очень как то
+        float p = 1.0f/q;
+        //i = static_cast<int>(0x3f7a3bea + (1.0f/q) * (i - 0x3f7a3bea));
+        i = 1064975338 + p*(i - 1064975338);
         float y = *(float *) &i;
 
+        //y= y *(q-2 + sqrtf(-1.0f+ 2.0f*(x*(1.0f-p)/powNatural(y,q) + p))) / (q - 1);
+        return y *(q-2 + sqrtf(-1.0f+ 2.0f*( x*(1.0f-p)/powNatural(y,q) + p ))) / (q - 1);
+    }
+
+//    static double powInverse2(double x, int q) { //equal pow(x,1/q) // второй с корнем
+//        double p = 1.0d/q;
+//        long i = *(long *) &x;
+//        i = (0x3FEF47724901B800 + p*(i - 0x3FEF47724901B800));
+//        double y = *(double *) &i;
+//
+//        double p1 = 1.0d-p;
+//        double px= p*x;
+//        int q1 =q-1;
+//        return y *(q-2 + sqrt(-1.0d+ 2.0d*( x*(1.0d-p)/powNatural(y,q) + p ))) / (q - 1);
+//    }
+//
+
+//
+//    static float powInverse2(float x, int q) { //equal pow(x,1/q)
+//        int i = *(int *) &x;
+//        i = 0x3f7a3bea + (1.0f / q) * (i - 0x3f7a3bea);
+//        float y = *(float *) &i;
+//
+//        //  y = (1-1.0/q)*y+(1.0/q)*x/powNatural(y,q-1);
+//        float a = powNatural(y, q - 2);
+//        float b = a * y;//powNatural(y,q-1)
+//        float c = b * y;//powNatural(y,q)
+//        float cx = c - x;
+//        float d = ((q - 1) * a * cx) / (b * b * q);
+//        return y - (cx) / (q * b) * (1 + 0.5f * d);
+//    }
+
+    static double powInverse2(double x, int q) { //equal pow(x,1/q)
+        long i = *(long*) &x;
+        double p = 1.0d/q;
+        i = 0x3FEF47724901B800 + p* (i - 0x3FEF47724901B800);
+        double y = *(double *) &i;
+
         //  y = (1-1.0/q)*y+(1.0/q)*x/powNatural(y,q-1);
-        float a = powNatural(y, q - 2);
-        float b = a * y;//powNatural(y,q-1)
-        float c = b * y;//powNatural(y,q)
-        float cx = c - x;
-        float d = ((q - 1) * a * cx) / (b * b * q);
-        return y - (cx) / (q * b) * (1 + 0.5f * d);
+        double a = powNatural(y, q - 2);
+        double b = a * y;//powNatural(y,q-1)
+        double c = b * y;//powNatural(y,q)
+        double cx = c - x;
+        double d = ((q - 1) * a * cx) / (b * b * q);
+        y = y -  (cx) / (q * b) * (1 + 0.5d * d);
+
+//        a = powNatural(y, q - 2);
+//        b = a * y;//powNatural(y,q-1)
+//        c = b * y;//powNatural(y,q)
+//        cx = c - x;
+//        d = ((q - 1) * a * cx) / (b * b * q);
+        double p1 = 1.0d-p;
+        double px= p*x;
+        int q1 =q-1;
+
+        return  p1 * y + px/powNatural(y, q1);;
     }
 
     template<typename T>

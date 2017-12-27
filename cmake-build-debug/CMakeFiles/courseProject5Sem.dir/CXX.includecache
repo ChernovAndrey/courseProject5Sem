@@ -6,26 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/andrey/CLionProjects/courseProject5Sem/Grid/Grid.h
-tuple
--
-iostream
-/home/andrey/CLionProjects/courseProject5Sem/Grid/iostream
-vector
--
-cmath
-/home/andrey/CLionProjects/courseProject5Sem/Grid/cmath
-
-/home/andrey/CLionProjects/courseProject5Sem/Grid/UniformGrid.h
-Grid.h
-/home/andrey/CLionProjects/courseProject5Sem/Grid/Grid.h
-
-/home/andrey/CLionProjects/courseProject5Sem/LeastSquare.h
-iostream
--
-vector
--
-
 /home/andrey/CLionProjects/courseProject5Sem/QuickMath.hpp
 cmath
 -
@@ -45,10 +25,4 @@ iomanip
 -
 QuickMath.hpp
 /home/andrey/CLionProjects/courseProject5Sem/QuickMath.hpp
-Grid/Grid.h
-/home/andrey/CLionProjects/courseProject5Sem/Grid/Grid.h
-Grid/UniformGrid.h
-/home/andrey/CLionProjects/courseProject5Sem/Grid/UniformGrid.h
-LeastSquare.h
-/home/andrey/CLionProjects/courseProject5Sem/LeastSquare.h
 
