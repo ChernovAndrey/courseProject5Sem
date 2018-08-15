@@ -8,8 +8,8 @@
 using namespace std;
 using number = float;
 int N = 10000000;
-const int n =4;
-const int m=3;
+const int n =1;
+const int m=4;
 const number p =(1.0/m)*n;
 
 
